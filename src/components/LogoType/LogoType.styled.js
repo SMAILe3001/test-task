@@ -15,5 +15,5 @@ export const Images = styled.img`
 `;
 
 export const LogoText = styled.span`
-  margin-left: 2px;
+  margin-left: 0px;
 `;

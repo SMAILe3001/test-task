@@ -2,9 +2,14 @@ import styled from '@emotion/styled';
 import { Field, Form, ErrorMessage } from 'formik';
 
 export const FormStyle = styled(Form)`
-  width: 380px;
-  margin-left: auto;
-  margin-right: auto;
+  min-width: 328px;
+  width: 100%;
+
+  @media (min-width: 480px) {
+    width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 export const Label = styled.label`
@@ -18,13 +23,13 @@ export const Text = styled.span`
   font-size: 12px;
   line-height: calc(14 / 12);
 
+  position: absolute;
+  top: 0%;
+  left: 16px;
   color: ${props => {
     if (props?.valid === undefined) return '#7e7e7e';
     return '#CB3D40';
   }};
-  position: absolute;
-  top: 0%;
-  left: 16px;
   transform: translateY(-50%);
   background-color: #f8f8f8;
 `;
@@ -33,7 +38,8 @@ export const Input = styled(Field)`
   font-size: 16px;
   line-height: calc(26 / 16);
 
-  width: 380px;
+  min-width: 328px;
+  width: 100%;
   height: 54px;
   background-color: #f8f8f8;
   border: ${props => {
@@ -45,14 +51,12 @@ export const Input = styled(Field)`
 `;
 
 export const MessageError = styled(ErrorMessage)`
-  position: absolute;
-  left: 16px;
-  font-family: 'Nunito';
-  font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: calc(14 / 12);
 
+  position: absolute;
+  left: 16px;
   color: ${props => {
     if (props?.valid === undefined) return '#7e7e7e';
     return '#CB3D40';
@@ -82,12 +86,13 @@ export const InputImg = styled(Field)`
 `;
 
 export const LabelImgs = styled.label`
-  position: relative;
   font-size: 16px;
   line-height: calc(26 / 16);
 
+  position: relative;
   display: flex;
-  width: 380px;
+  width: 100%;
+  min-width: 328px;
   height: 54px;
   border-radius: 4px;
   padding-left: 16px;
@@ -96,9 +101,6 @@ export const LabelImgs = styled.label`
 `;
 
 export const UploadImgs = styled.span`
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 400;
   font-size: 16px;
   line-height: calc(26 / 16);
 
@@ -112,10 +114,6 @@ export const UploadImgs = styled.span`
   padding: 14px;
 `;
 export const UploadPhoto = styled.span`
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
   line-height: calc(26 / 16);
 
   display: flex;

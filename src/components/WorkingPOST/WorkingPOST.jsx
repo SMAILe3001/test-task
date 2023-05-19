@@ -18,7 +18,6 @@ import {
 } from './WorkingPOST.styled';
 import { useState } from 'react';
 import { addUserCard, fetchToken } from 'servises/servise';
-import Section from 'components/Section/Section';
 import UserSucces from 'components/UserSucces/UserSucces';
 
 const phoneRegExp = /^\+380\d{3}\d{2}\d{2}\d{2}$/;
@@ -38,15 +37,8 @@ let schema = object({
     .required('Enter your phone')
     .matches(phoneRegExp, '+380XXXXXXXXX'),
   position: string().required('Select your position'),
-  // photo: mixed().required('Required'),
 });
 
-// const initialValues = {
-//   name: 'John Doe',
-//   email: 'john@mail.com',
-//   phone: '+380996842574',
-//   position: '1',
-// };
 const initialValues = {
   name: '',
   email: '',
@@ -54,9 +46,18 @@ const initialValues = {
   position: '1',
 };
 
-const WorkingPOST = () => {
+const WorkingPOST = ({ refUse }) => {
   const [fileName, setFileName] = useState(null);
   const [imagesObject, setImagesObject] = useState(null);
+  const [addNewUser, setAddNewUser] = useState(false);
+
+  const requestCompleted = bull => {
+    setAddNewUser(bull);
+    setTimeout(() => {
+      refUse.current.scrollIntoView({ behavior: 'smooth' });
+      setAddNewUser(prev => !prev);
+    }, 1500);
+  };
 
   const images = e => {
     if (e.target.files.length) setImagesObject(e.target.files[0]);
@@ -74,111 +75,114 @@ const WorkingPOST = () => {
     formData.append('position_id', values.position);
     formData.append('photo', imagesObject);
 
-    addUserCard(formData, TOKEN);
+    const suxesOk = await addUserCard(formData, TOKEN);
+    console.log(suxesOk);
+    requestCompleted(suxesOk.success);
     setFileName(null);
     resetForm();
   };
 
   return (
     <>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={schema}
-        onSubmit={handelSubmit}
-      >
-        {({ errors, values, touched }) => (
-          <FormStyle>
-            <Label>
-              {values.name && (
-                <Text valid={touched.name && errors.name}>Your name</Text>
-              )}
-              <Input
-                valid={touched.name && errors.name}
-                name="name"
-                type="text"
-                placeholder="Your name"
-              />
-              <MessageError
-                valid={touched.name && errors.name}
-                name="name"
-                component="div"
-              />
-            </Label>
-            <Label>
-              {values.email && (
-                <Text valid={touched.email && errors.email}>Email</Text>
-              )}
-              <Input
-                valid={touched.email && errors.email}
-                name="email"
-                type="email"
-                placeholder="Email"
-              />
-              <MessageError
-                valid={touched.email && errors.email}
-                name="email"
-                component="div"
-              />
-            </Label>
-            <Label>
-              {values.phone && (
-                <Text valid={touched.phone && errors.phone}>Phone</Text>
-              )}
-              <Input
-                valid={touched.phone && errors.phone}
-                name="phone"
-                type="tel"
-                placeholder="Phone"
-              />
-              <MessageError
-                valid={touched.phone && errors.phone}
-                name="phone"
-                component="div"
-              />
-            </Label>
-            <RadioGroup>
-              <RadioTitle>Select your position</RadioTitle>
-              <RadioLabel>
-                <Field type="radio" name="position" value="1" checked />
-                <RadioText>Lawyer</RadioText>
-              </RadioLabel>
-              <RadioLabel>
-                <Field type="radio" name="position" value="2" />
-                <RadioText>Content manager</RadioText>
-              </RadioLabel>
-              <RadioLabel>
-                <Field type="radio" name="position" value="3" />
-                <RadioText>Security</RadioText>
-              </RadioLabel>
-              <RadioLabel>
-                <Field type="radio" name="position" value="4" />
-                <RadioText>Designer</RadioText>
-              </RadioLabel>
-            </RadioGroup>
-            <LabelImgs>
-              <UploadImgs>Upload</UploadImgs>
-              <UploadPhoto>
-                {fileName ? fileName : 'Upload your photo'}
-              </UploadPhoto>
-              <InputImg
-                type="file"
-                accept="image/*"
-                name="photo"
-                onChange={images}
-              />
-            </LabelImgs>
-            <Button
-              disabled={Object.keys(errors).length !== 0 || !fileName}
-              type="submit"
-            >
-              Sign up
-            </Button>
-          </FormStyle>
-        )}
-      </Formik>
-      <Section title="User successfully registered">
+      {addNewUser ? (
         <UserSucces />
-      </Section>
+      ) : (
+        <Formik
+          initialValues={initialValues}
+          validationSchema={schema}
+          onSubmit={handelSubmit}
+        >
+          {({ errors, values, touched }) => (
+            <FormStyle>
+              <Label>
+                {values.name && (
+                  <Text valid={touched.name && errors.name}>Your name</Text>
+                )}
+                <Input
+                  valid={touched.name && errors.name}
+                  name="name"
+                  type="text"
+                  placeholder="Your name"
+                />
+                <MessageError
+                  valid={touched.name && errors.name}
+                  name="name"
+                  component="div"
+                />
+              </Label>
+              <Label>
+                {values.email && (
+                  <Text valid={touched.email && errors.email}>Email</Text>
+                )}
+                <Input
+                  valid={touched.email && errors.email}
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                />
+                <MessageError
+                  valid={touched.email && errors.email}
+                  name="email"
+                  component="div"
+                />
+              </Label>
+              <Label>
+                {values.phone && (
+                  <Text valid={touched.phone && errors.phone}>Phone</Text>
+                )}
+                <Input
+                  valid={touched.phone && errors.phone}
+                  name="phone"
+                  type="tel"
+                  placeholder="Phone"
+                />
+                <MessageError
+                  valid={touched.phone && errors.phone}
+                  name="phone"
+                  component="div"
+                />
+              </Label>
+              <RadioGroup>
+                <RadioTitle>Select your position</RadioTitle>
+                <RadioLabel>
+                  <Field type="radio" name="position" value="1" checked />
+                  <RadioText>Lawyer</RadioText>
+                </RadioLabel>
+                <RadioLabel>
+                  <Field type="radio" name="position" value="2" />
+                  <RadioText>Content manager</RadioText>
+                </RadioLabel>
+                <RadioLabel>
+                  <Field type="radio" name="position" value="3" />
+                  <RadioText>Security</RadioText>
+                </RadioLabel>
+                <RadioLabel>
+                  <Field type="radio" name="position" value="4" />
+                  <RadioText>Designer</RadioText>
+                </RadioLabel>
+              </RadioGroup>
+              <LabelImgs>
+                <UploadImgs>Upload</UploadImgs>
+                <UploadPhoto>
+                  {fileName ? fileName : 'Upload your photo'}
+                </UploadPhoto>
+                <InputImg
+                  type="file"
+                  accept="image/*"
+                  name="photo"
+                  onChange={images}
+                />
+              </LabelImgs>
+              <Button
+                disabled={Object.keys(errors).length !== 0 || !fileName}
+                type="submit"
+              >
+                Sign up
+              </Button>
+            </FormStyle>
+          )}
+        </Formik>
+      )}
     </>
   );
 };
