@@ -3,7 +3,12 @@ import noAvatar from '../../img/noAvatar.svg';
 
 const CardUser = ({ data: { photo, name, position, email, phone } }) => (
   <Card>
-    <Avatar src={photo ? photo : noAvatar} alt="avatar" loading="lazy" />
+    <Avatar
+      src={photo ? photo : noAvatar}
+      alt="avatar"
+      loading="lazy"
+      width="70"
+    />
     <Name>{name}</Name>
     <Text>{position}</Text>
     <Text>
