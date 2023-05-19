@@ -1,5 +1,5 @@
 import { Formik, Field } from 'formik';
-import { object, string } from 'yup';
+import { number, object, string } from 'yup';
 import Button from 'components/Button/Button';
 import {
   RadioGroup,
@@ -16,8 +16,8 @@ import {
   UploadImgs,
   UploadPhoto,
 } from './WorkingPOST.styled';
-import { useState } from 'react';
-import { addUserCard, fetchToken } from 'servises/servise';
+import { useEffect, useState } from 'react';
+import { addUserCard, fetchPositions, fetchToken } from 'servises/servise';
 import UserSucces from 'components/UserSucces/UserSucces';
 
 const phoneRegExp = /^\+380\d{3}\d{2}\d{2}\d{2}$/;
@@ -36,20 +36,31 @@ let schema = object({
   phone: string()
     .required('Enter your phone')
     .matches(phoneRegExp, '+380XXXXXXXXX'),
-  position: string().required('Select your position'),
+  position: number().required('Select your position'),
 });
 
 const initialValues = {
   name: '',
   email: '',
   phone: '',
-  position: '1',
+  position: 1,
 };
 
 const WorkingPOST = ({ refUse }) => {
   const [fileName, setFileName] = useState(null);
   const [imagesObject, setImagesObject] = useState(null);
   const [addNewUser, setAddNewUser] = useState(false);
+  const [positionList, setPositionList] = useState([]);
+
+  useEffect(() => {
+    if (positionList?.length) return;
+
+    async function receivingPosition() {
+      const getPosition = await fetchPositions();
+      setPositionList(getPosition.positions);
+    }
+    receivingPosition();
+  }, [positionList]);
 
   const requestCompleted = bull => {
     setAddNewUser(bull);
@@ -142,6 +153,17 @@ const WorkingPOST = ({ refUse }) => {
                   component="div"
                 />
               </Label>
+              {/* <RadioGroup>
+                <RadioTitle>Select your position</RadioTitle>
+
+                {positionList.map(({ id, name }) => (
+                  <RadioLabel key={id}>
+                    <Field type="radio" name="position" value={id} />
+                    <RadioText>{name}</RadioText>
+                  </RadioLabel>
+                ))}
+              </RadioGroup> */}
+
               <RadioGroup>
                 <RadioTitle>Select your position</RadioTitle>
                 <RadioLabel>
@@ -161,6 +183,7 @@ const WorkingPOST = ({ refUse }) => {
                   <RadioText>Designer</RadioText>
                 </RadioLabel>
               </RadioGroup>
+
               <LabelImgs>
                 <UploadImgs>Upload</UploadImgs>
                 <UploadPhoto>
