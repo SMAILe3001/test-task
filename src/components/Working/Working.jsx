@@ -3,7 +3,7 @@ import ListUsers from 'components/ListUsers/ListUsers';
 import { useEffect, useState } from 'react';
 import { gethUserCard } from 'servises/servise';
 
-let firstStart = true;
+// let firstStart = true;
 
 const WorkingGET = () => {
   const [usersCard, setUsersCard] = useState([]);
@@ -13,10 +13,10 @@ const WorkingGET = () => {
   const [totalPage, setTotalPage] = useState(NaN);
 
   useEffect(() => {
-    if (firstStart) {
-      firstStart = false;
-      return;
-    }
+    // if (firstStart) {
+    //   firstStart = false;
+    //   return;
+    // }
 
     const searchData = async () => {
       try {
@@ -41,7 +41,6 @@ const WorkingGET = () => {
       {totalPage !== page && (
         <Button onClick={() => setPage(prev => prev + 1)}>Show more</Button>
       )}
-
       {isLoading && <h2>We download card users...</h2>}
     </>
   );
