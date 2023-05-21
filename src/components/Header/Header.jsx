@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Button from 'components/Button/Button';
 import LogoType from 'components/LogoType/LogoType';
 import { ButtonPosition, ElementPosition, HeaderStyle } from './Header.styled';
@@ -22,6 +23,11 @@ const Header = ({ usersRef, singUpRef }) => {
       </ElementPosition>
     </HeaderStyle>
   );
+};
+
+Header.propType = {
+  usersRef: PropTypes.number,
+  singUpRef: PropTypes.number,
 };
 
 export default Header;

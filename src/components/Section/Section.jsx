@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Container, SectionStyle, Title } from './Section.styled';
 
 const Section = ({ title, children, refUse }) => (
@@ -8,4 +9,11 @@ const Section = ({ title, children, refUse }) => (
     </Container>
   </SectionStyle>
 );
+
+Section.propType = {
+  title: PropTypes.string,
+  children: PropTypes.object,
+  refUse: PropTypes.number,
+};
+
 export default Section;

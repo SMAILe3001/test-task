@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Button from 'components/Button/Button';
 import { Container, HeroContent, HeroText, HeroTitle } from './Hero.styled';
 
@@ -22,6 +23,10 @@ const Hero = ({ refUse }) => {
       </Container>
     </section>
   );
+};
+
+Hero.propType = {
+  refUse: PropTypes.number,
 };
 
 export default Hero;

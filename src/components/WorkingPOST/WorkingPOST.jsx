@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Field } from 'formik';
 import { number, object, string } from 'yup';
 import Button from 'components/Button/Button';
@@ -16,7 +18,6 @@ import {
   UploadImgs,
   UploadPhoto,
 } from './WorkingPOST.styled';
-import { useEffect, useState } from 'react';
 import { addUserCard, fetchPositions, fetchToken } from 'servises/servise';
 import UserSucces from 'components/UserSucces/UserSucces';
 
@@ -46,7 +47,7 @@ const initialValues = {
   position: 1,
 };
 
-const WorkingPOST = ({ refUse }) => {
+const WorkingPOST = ({ refUse, rezetUser }) => {
   const [fileName, setFileName] = useState(null);
   const [imagesObject, setImagesObject] = useState(null);
   const [addNewUser, setAddNewUser] = useState(false);
@@ -64,6 +65,7 @@ const WorkingPOST = ({ refUse }) => {
 
   const requestCompleted = bull => {
     setAddNewUser(bull);
+    rezetUser();
     setTimeout(() => {
       refUse.current.scrollIntoView({ behavior: 'smooth' });
       setAddNewUser(prev => !prev);
@@ -87,7 +89,6 @@ const WorkingPOST = ({ refUse }) => {
     formData.append('photo', imagesObject);
 
     const suxesOk = await addUserCard(formData, TOKEN);
-    console.log(suxesOk);
     requestCompleted(suxesOk.success);
     setFileName(null);
     resetForm();
@@ -208,6 +209,11 @@ const WorkingPOST = ({ refUse }) => {
       )}
     </>
   );
+};
+
+WorkingPOST.propType = {
+  refUse: PropTypes.number,
+  rezetUser: PropTypes.number,
 };
 
 export default WorkingPOST;

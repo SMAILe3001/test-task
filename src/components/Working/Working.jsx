@@ -1,11 +1,10 @@
+import PropTypes from 'prop-types';
 import Button from 'components/Button/Button';
 import ListUsers from 'components/ListUsers/ListUsers';
 import { useEffect, useState } from 'react';
 import { gethUserCard } from 'servises/servise';
 
-// let firstStart = true;
-
-const WorkingGET = () => {
+const WorkingGET = ({ rezetUserList }) => {
   const [usersCard, setUsersCard] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -13,11 +12,6 @@ const WorkingGET = () => {
   const [totalPage, setTotalPage] = useState(NaN);
 
   useEffect(() => {
-    // if (firstStart) {
-    //   firstStart = false;
-    //   return;
-    // }
-
     const searchData = async () => {
       try {
         setIsLoading(true);
@@ -32,7 +26,7 @@ const WorkingGET = () => {
       }
     };
     searchData();
-  }, [page]);
+  }, [page, rezetUserList]);
 
   return (
     <>
@@ -44,6 +38,10 @@ const WorkingGET = () => {
       {isLoading && <h2>We download card users...</h2>}
     </>
   );
+};
+
+WorkingGET.propType = {
+  rezetUserList: PropTypes.func,
 };
 
 export default WorkingGET;
