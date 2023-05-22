@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
 
 export const ButtonStyle = styled.button`
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 400;
   font-size: 16px;
   line-height: calc(26 / 16);
 
@@ -19,6 +16,7 @@ export const ButtonStyle = styled.button`
   &:hover {
     background-color: #00bdd3;
   }
+
   &:disabled {
     background-color: #b4b4b4;
     color: rgba(255, 255, 255, 0.87);
